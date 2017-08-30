@@ -112,9 +112,11 @@
   <ItemGroup>
     <ClCompile Include="camouflage.cpp" />
     <ClCompile Include="map.cpp" />
+    <ClCompile Include="piece.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="map.h" />
+    <ClInclude Include="piece.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
