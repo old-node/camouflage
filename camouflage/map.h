@@ -8,3 +8,23 @@
 using namespace std;
 
 // 
+class map
+{
+private:
+	int _no = 0;
+	int _difficultee = 0;
+
+
+public:
+	map();
+	~map();
+
+};
+
+map::map()
+{
+}
+
+map::~map()
+{
+}

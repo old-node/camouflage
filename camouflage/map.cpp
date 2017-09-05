@@ -4,6 +4,7 @@
 // But:		Méthodes de l'objet map.
 */
 
+#include "map.h"
 using namespace std;
 
 // 

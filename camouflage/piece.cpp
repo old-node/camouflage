@@ -4,6 +4,7 @@
 // But:		Méthodes de l'objet pièce.
 */
 
+#include "piece.h"
 using namespace std;
 
 // 
