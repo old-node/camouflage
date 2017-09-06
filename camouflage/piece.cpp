@@ -1,10 +1,10 @@
 /* Auteur:	Olivier Lemay Dostie et Olivier G.F.
 // Date:	30 août 2017
-// Ficher:	map.cpp
-// But:		Méthodes de l'objet map.
+// Ficher:	piece.cpp
+// But:		Méthodes de l'objet pièce.
 */
 
-#include "map.h"
+#include "piece.h"
 using namespace std;
 
 // 

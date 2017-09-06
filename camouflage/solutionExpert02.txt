@@ -1,0 +1,6 @@
+4,4
+
+XO,XP,YO,YO
+WP,W ,VO,VP
+UP,WO,Z ,VO
+UO,U ,ZO,ZP
