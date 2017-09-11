@@ -9,8 +9,8 @@
 #include <algorithm>
 #include <iostream>
 #include <saisieSecurisee.h>
-#include "partie.h"
-#include "map.h"
+// #include "partie.h"
+// #include "map.h"
 #include "piece.h"
 using namespace std;
 
@@ -24,6 +24,7 @@ int main()
 {
 	setlocale(LC_CTYPE, "fra");
 
+	piece2cases test('U',"");
 
 
 
