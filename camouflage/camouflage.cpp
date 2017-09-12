@@ -30,10 +30,10 @@ int main()
 	setlocale(LC_CTYPE, "fra");
 
 	piece2cases X('X', "PP"), Y('Y', "PO");
-	// piece3cases U('U', " PO"), V('V', "P O"), W('W', " OP"), Z('Z', " \0O ");
-	//vector<piece> morceaux = { X, Y/*, U , V, W, X, Y, Z*/ };
+	piece3cases U('U', "_PO"), V('V', "P_O"), W('W', "_OP"), Z('Z', "_O_");
+	// vector<piece> morceaux = { U, V, W, Z, X, Y };
 
-	X.tourneGauche();
+	// X.tourneDroite();
 	cout << X;
 
 	pause();
