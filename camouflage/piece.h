@@ -133,7 +133,7 @@ public:
 
 	piece3cases * clone();	// Copieur héréditaire
 
-	~piece3cases() { delete this; }	// Destructeur
+	~piece3cases();			// Destructeur
 
 	void setTuile(const char * t);
 
@@ -146,3 +146,4 @@ public:
 ///===============///
 // AUTRES MÉTHODES //
 ///===============///
+ostream & operator<<(ostream & sortie, piece & p);

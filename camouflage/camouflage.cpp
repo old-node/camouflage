@@ -24,7 +24,7 @@ int main()
 {
 	setlocale(LC_CTYPE, "fra");
 
-  //Test PiÃ¨ces
+	//Test Pièces
 	piece2cases X('X', "PP"), Y('Y', "PO");
 	piece3cases U('U', "_PO"), V('V', "P_O"), W('W', "_OP"), Z('Z', "_O_");
 	// vector<piece> morceaux = { U, V, W, Z, X, Y };
@@ -33,8 +33,8 @@ int main()
 	cout << X;
 
 	pause();
-  
-  //Test Carte
+
+	//Test Carte
 	carte.openFile(cout);
 	carte.print(cout);
 	cout << endl;

@@ -8,6 +8,12 @@
 using namespace std;
 
 
+ostream & operator<<(ostream & sortie, piece & p)
+{
+	p.print(sortie);
+	return sortie;
+}
+
 /* PIECE */
 ///===== */
 
@@ -124,7 +130,7 @@ piece2cases * piece2cases::clone()
 // Destructeur
 piece2cases::~piece2cases()
 {
-	delete this;
+	piece::~piece();
 }
 // Change le nombre de tuile nécessaire de la pièce
 void piece2cases::setTuile(const char * t)
@@ -161,6 +167,11 @@ piece3cases::piece3cases(const char & nom, const char * t)
 piece3cases * piece3cases::clone()
 {
 	return new piece3cases(*this);
+}
+
+piece3cases::~piece3cases()
+{
+	piece::~piece();
 }
 
 // Change le nombre de tuile nécessaire de la pièce
