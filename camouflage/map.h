@@ -6,25 +6,24 @@
 
 #pragma once
 using namespace std;
+#include <iostream>
+#include <fstream>	
+#include <string>
+#include <vector>
 
-// 
+
 class map
 {
 private:
-	int _no = 0;
-	int _difficultee = 0;
-
-
+	ifstream _entree;
+	vector<vector<char>> _map;
 public:
 	map();
 	~map();
-
+	string openFile(ostream& sortie);	//Ouvre le fichier et apelle la fonction de lecture de fichier
+	void initMap();		//Lit le fichier et initialise la carte avec
+	void print(ostream& sortie)const;	//Affiche le contenu de la carte
+	char getCase(int x, int y)const;	//Retourne le contenu d'une case de la carte selon sa position X,Y
 };
-
-map::map()
-{
-}
-
-map::~map()
-{
-}
+//afficher le contenu du vecteur avec l’opérateur <<
+ostream& operator<<(ostream& sortie, const map& printMap);
