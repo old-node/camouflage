@@ -22,307 +22,204 @@ const int NB_CHAR_CODE = 3;
 struct section
 {
 public:
-	int _x = 0;				// Coordonée horizontale de la tuile dans la pièce
-	int _y = 0;				// Coordonée verticale de la tuile dans la pièce
-	char _code = '\0';	// Code qui identifie la tuile dans le jeu
+	char _code = '\0';		// Code qui identifie la tuile dans le jeu
 	bool _valide = false;	// Variable pour s'assurer que la tuile est adéquate
 
-	section() {}
-	section(int x, int y, char code)	// Initialiseur
+	section() {}					// Initialisateur par défaut
+	section(char code)				// Initialiseur
 	{
-		_x = x;
-		_y = y;
 		_code = toupper(code);
 		if (code != '\0')
 			_valide = true;
 		else
 			_valide = false;
 	}
-	section(const section & s)		// Copieur
+	section(const section & t)		// Copieur
 	{
-		_x = s._x;
-		_y = s._y;
-		_code = s._code;
-		_valide = s._valide;
+		_code = t._code;
+		_valide = t._valide;
 	}
 	const section & operator=
-		(const section & s)			// Copieur par l'opérateur =
+		(section & t)				// Copieur par l'opérateur =
 	{
-		section c(s);
-		return c;
+		return *(new section(t));	// Bug: mauvaise opération pour copier ?
 	}
 	~section()						// Destructeur
 	{
-		_x = _y = _valide = 0;
 		_code = '\0';
+		_valide = 0;
 	}
 };
 
-
-//struct base {
-//	virtual base * clone() const = 0;
-//	virtual ~base() {}
-//};
-//struct derivation : base {
-//	virtual derivation * clone() const { return new derivation(*this); }
-//};
-
-// Affiche le code d'une section avec l’opérateur <<.
-ostream & operator<<(ostream & sortie, const section & s)
-{
-	return sortie << s._code;
-}
-// Affiche le code d'une section avec l’opérateur <<.
-ostream & operator<<(ostream & sortie, const vector<section> & t)
-{
-	for (auto tuile : t)
-		sortie << tuile << " ";
-	return sortie;
-}
 
 
 // Objet parent des pièces du jeu de base.
 class piece
 {
 protected:
-	char _nom = '\0';
-	int _x = 0;				// Coordonnée horizontale de la pièce dans la map
-	int _y = 0;				// Coordonnée verticale de la pièce dans la map
-	int _angle = 0;			// Angle de la pièce dans la map
-	vector<section> _tuile;	// Éléments formant la pièce
+	char _nom = '\0';			// Caractère qui représente la pièce
+	int _angle = 0;				// Angle de la pièce dans la map
+	section _tuile[2][2];		// Éléments formant la pièce
+
+	void initTuile				// Initialise le nombre de tuile nécessaire pour la pièce
+	(const char * t, const int NB_TUILE);
+	virtual void pivote() = 0;	// Effectue les modifications principale avant les rotations
 
 public:
-	virtual piece * create			// Initialisateur permettant la surcharge de paramètres
-	(const char & nom, const char * t) = 0;
-	piece() {
-		create('T', "_");
-	}
-	piece(const char & nom, const char * t)
-	{
-		create(nom, t);
-	}
+	virtual piece * create		// Initialisateur par virtualisation
+	(const char & nom, const char * t);
+	piece();					// Initialisateur par défaut
+	piece(const char & nom, const char * t);
 
-	virtual piece * clone() const = 0;	// Copieur héréditaire
-	piece(const piece & p)			// Copieur
-	{
-		_nom = p.getNom();
-		_x = p.getX();
-		_y = p.getY();
-		_angle = p.getAngle();
-		_tuile = p.getTuile();
-	}
-	piece & operator=(const piece & p)	// Copieur par l'opérateur =
-	{
-		return *this->clone();
-	}
+	virtual piece *				// Copieur héréditaire
+		piece::clone() = 0;
+	piece & operator=			// Copieur par l'opérateur =
+		(const piece & p);
 
-	virtual ~piece() = default;		// Destructeur	*/*
+	virtual ~piece() = default;	// Destructeur
 
 	/// * Analyse
-	virtual void depose(int x, int y, int angle) = 0;// Positionne la pièce aux coordonées et à l'angle souhaité
-	virtual void deplace() = 0;		// Ittère vers la prochaine position que la pièce peut prendre dans la map
+	//virtual void depose(int x, int y, int angle) = 0;// Positionne la pièce aux coordonées et à l'angle souhaité
+	//virtual void deplace() = 0;		// Ittère vers la prochaine position que la pièce peut prendre dans la map
 
 	/// Manipulation de la pièce dans la map
-	virtual void ajoute() = 0;		// Débute le positionnement manuel
-	virtual void retire() = 0;		// Termine le positionnement manuel
-	virtual void place() = 0;		// Fixe la pièce à son endroit établi 
-	void bougeGauche()				// ** Déplace la pièce vers la gauche dans la map
-	{
-		setX(_x - 1);
-	}
-	virtual void bougeDroite() = 0;	// * Déplace la pièce vers la droite dans la map
-	void bougeHaut()				// ** Déplace la pièce vers le haut dans la map
-	{
-		setY(_y - 1);
-	}
-	virtual void bougeBas() = 0;	// * Déplace la pièce vers le bas dans la map
+	//virtual void ajoute() = 0;		// Débute le positionnement manuel
+	//virtual void retire() = 0;		// Termine le positionnement manuel
+	//virtual void place() = 0;		// Fixe la pièce à son endroit établi 
+	//void bougeGauche()				// ** Déplace la pièce vers la gauche dans la map
+	//{
+	//	setX(_x - 1);
+	//}
+	//virtual void bougeDroite() = 0;	// * Déplace la pièce vers la droite dans la map
+	//void bougeHaut()				// ** Déplace la pièce vers le haut dans la map
+	//{
+	//	setY(_y - 1);
+	//}
+	//virtual void bougeBas() = 0;	// * Déplace la pièce vers le bas dans la map
+
 	virtual void tourneGauche() = 0;// Fait pivoter la pièce sur elle-même dans le sens anti-horaire
-	virtual void tourneDroite() = 0;// * Fait pivoter la pièce sur elle-même dans le sens horaire
+	virtual void tourneDroite() = 0;// Fait pivoter la pièce sur elle-même dans le sens horaire
+
 
 	/// Setteur
-	void setNom(char nom) { _nom = nom; }
-	void setX(int x)				// Positionne la pièce à une coordonnée horizontale
-	{
-		assert(x >= 0);
-		_x = x;
-	}
-	void setY(int y)				// Positionne la pièce à une coordonnée verticale
-	{
-		assert(y >= 0);
-		_y = y;
-	}
-	void setAngle(int angle)		// Change l'angle de la pièce
-	{
-		assert(angle >= 0 && angle <= 4);
-		_angle = angle;
-	}
-	void setTuile(vector<section> tuile)
-	{
-		_tuile.resize(0);
-		for (auto & t : tuile)
-			_tuile.push_back(t);
-	}
+	void setNom(char nom);		// Change le caractère qui représente la pièce
+	//void setX(int x)			// Positionne la pièce à une coordonnée horizontale
+	//{
+	//	assert(x >= 0);
+	//	_x = x;
+	//}
+	//void setY(int y)			// Positionne la pièce à une coordonnée verticale
+	//{
+	//	assert(y >= 0);
+	//	_y = y;
+	//}
+	//void setAngle(int angle)	// Change l'angle de la pièce
+	//{
+	//	assert(angle >= 0 && angle <= 4);
+	//	_angle = angle;
+	//
+
+	virtual void setTuile		// Change le contenu des tuiles de la pièce
+	(const char * t);
 
 	/// Getteur
-	virtual bool aPosition(int x, int y) const = 0;	// Vérifie si l'une des tuile est placé aux coordonnées ciblées
-	char getNom() const { return _nom; }	// Retourne le caractère qui représente la pièce
-	int getX() const { return _x; }			// Retourne la coordonnée horizontale de la pièce dans la map
-	int getY() const { return _y; }			// Retourne la coordonnée verticale de la pièce dans la map
-	int getAngle() const { return _angle; }// Retourne l'angle de la pièce (de 1 à 4)
-	virtual bool compatible() const = 0;	// Retourne si la pièce peut être déposé à son endroit
-	const vector<section> getTuile() const	// Retourne toutes les tuiles de la pièce
-	{
-		return _tuile;
-	}
+	//virtual bool aPosition	// Vérifie si l'une des tuile est placé aux coordonnées ciblées
+	//	(int x, int y) const = 0;
+	char getNom() const;		// Retourne le caractère qui représente la pièce
+	//int getX() const { return _x; }		// Retourne la coordonnée horizontale de la pièce dans la map
+	//int getY() const { return _y; }		// Retourne la coordonnée verticale de la pièce dans la map
+	//int getAngle() const { return _angle; }// Retourne l'angle de la pièce (de 1 à 4)
+	//virtual bool compatible() const = 0;	// Retourne si la pièce peut être déposé à son endroit
+	section getTuile(int i, int j) const;	// Retourne une des tuile de la pièce
 
-	/// virtual bool p() const = 0;		// 
+	/// virtual bool p() const = 0;	// 
 
-	void print(int noTuile) const	// Affiche le contenu de toutes les tuiles de la pièce
-	{
-		for (auto & tuile : _tuile)
-			cout << tuile << " ";
-	}
+	void print(ostream & sortie) const;	// Affiche le contenu de toutes les tuiles de la pièce
 };
 
 
-// Affiche le code d'une section avec l’opérateur <<.
-ostream & operator<<(ostream & sortie, const piece & p)
-{
-	return sortie << p.getTuile();
-}
 
 
 // Pièces formées de 2 tuiles.
 class piece2cases : public piece
 {
 private:
-	const int NB_TUILE = 2;	//
+	const int NB_TUILE = 2;	// Nombre de tuiles des objets pieces2cases.
+
+	void pivote() {}
 
 public:
-	piece2cases(const char & nom, const char * t)
-	{
-		create(nom, t);
-	}
-	piece2cases * create					// Initialisateur permettant la surcharge de paramètres
-	(const char & nom, const char * t)
-	{
-		assert(!isspace(nom));
-		setNom(nom);
-		vector<section> tuile;
-		for (int i = 0; i < NB_TUILE; i++)
-		{
-			assert(!iswspace(t[0]));
-			section t(i, 0, t[i]);
-			_tuile.push_back(t);
-		}
-		setTuile(tuile);
-		return this;
-	}
+	piece2cases * create	// Initialisateur permettant la surcharge de paramètres
+	(const char & nom, const char * t);
+	piece2cases
+	(const char & nom, const char * t);	// Initialisateur
 
-	piece2cases * clone() const				// Copieur héréditaire
-	{
-		return new piece2cases(*this);
-	}
-	~piece2cases() { delete this; }			// Destructeur
+	piece2cases * clone();	// Copieur héréditaire
+
+	~piece2cases();			// Destructeur
 
 	/// Analyse
-	void depose(int x, int y, int angle)	// Positionne la pièce aux coordonées et à l'angle souhaité
-	{
-		setX(x);
-		setY(y);
-		setAngle(angle);
-	}
-	void deplace()		// Ittère vers la prochaine position que la pièce peut prendre dans la map
-	{
+	//void depose(int x, int y, int angle)	// Positionne la pièce aux coordonées et à l'angle souhaité
+	//{
+	//	setX(x);
+	//	setY(y);
+	//	setAngle(angle);
+	//}
+	//void deplace()		// Ittère vers la prochaine position que la pièce peut prendre dans la map
+	//{
+	//}
 
-	}
+	///// Manipulation de la pièce dans la map
+	//void ajoute()		// Débute le positionnement manuel
+	//{
+	//}
+	//void retire()		// Termine le positionnement manuel
+	//{
+	//}
+	//void place()		// Fixe la pièce à son endroit établi 
+	//{
+	//}
+	//void bougeDroite()	// * Déplace la pièce vers la droite dans la map
+	//{
+	//	setX(_x + 1);
+	//}
+	//void bougeBas()		// * Déplace la pièce vers le bas dans la map
+	//{
+	//	setY(_y + 1);
+	//}
 
-	/// Manipulation de la pièce dans la map
-	void ajoute()		// Débute le positionnement manuel
-	{
+	//void setX(int x)
+	//{
+	//	piece::setX(x);
+	//	assert(x <= LARGEUR_MAP - (_angle % 2) ? 0 : 1);
+	//	_x = x;
+	//}
+	//void setY(int y)
+	//{
+	//	piece::setY(y);
+	//	assert(y <= HAUTEUR_MAP - (_angle % 2) ? 1 : 0);
+	//	_y = y;
+	//}
+	//void setAngle(int angle)
+	//{
+	//	piece::setAngle(angle);
+	//	//if ()
+	//	//	_angle = angle;
+	//}
+	void setTuile(const char * t);	// Change le nombre de tuile nécessaire de la pièce
 
-	}
-	void retire()		// Termine le positionnement manuel
-	{
-
-	}
-	void place()		// Fixe la pièce à son endroit établi 
-	{
-
-	}
-	void bougeDroite()	// * Déplace la pièce vers la droite dans la map
-	{
-		setX(_x + 1);
-	}
-	void bougeBas()		// * Déplace la pièce vers le bas dans la map
-	{
-		setY(_y + 1);
-	}
-	void tourneGauche()	// Fait pivoter la pièce sur elle-même dans le sens anti-horaire
-	{
-		if (_angle == 0)
-			_angle = 4;
-		else
-			_angle--;
-
-		if (_angle % 2 == 0)
-		{
-			_tuile[1]._x--;
-			_tuile[0]._y++;
-		}
-		else
-		{
-			_tuile[1]._x++;
-			_tuile[0]._y--;
-		}
-	}
-	void tourneDroite()	// * Fait pivoter la pièce sur elle-même dans le sens horaire
-	{
-		if (_angle == 4)
-			_angle = 0;
-		else
-			_angle++;
-
-		if (_angle % 2 == 0)
-		{
-			_tuile[1]._x--;
-			_tuile[0]._y++;
-		}
-		else
-		{
-			_tuile[1]._x++;
-			_tuile[0]._y--;
-		}
-	}
-
-	void setX(int x)
-	{
-		piece::setX(x);
-		assert(x <= LARGEUR_MAP - (_angle % 2) ? 0 : 1);
-		_x = x;
-	}
-	void setY(int y)
-	{
-		piece::setY(y);
-		assert(y <= HAUTEUR_MAP - (_angle % 2) ? 1 : 0);
-		_y = y;
-	}
-	void setAngle(int angle)
-	{
-		piece::setAngle(angle);
-		//if ()
-		//	_angle = angle;
-	}
+	void tourneGauche();	// Fait pivoter la pièce sur elle-même dans le sens anti-horaire
+	void tourneDroite();	// Fait pivoter la pièce sur elle-même dans le sens horaire
 
 	/// Getteur
-	bool aPosition(int x, int y) const	// Vérifie si l'une des tuile est placé aux coordonnées ciblées
-	{
-		return 0;
-	}
-	bool compatible() const	// Retourne si la pièce peut être déposé à son endroit
-	{
-		return 0;
-	}
+	//bool aPosition(int x, int y) const	// Vérifie si l'une des tuile est placé aux coordonnées ciblées
+	//{
+	//	return 0;
+	//}
+	//bool compatible() const	// Retourne si la pièce peut être déposé à son endroit
+	//{
+	//	return 0;
+	//}
 
 };
 
@@ -330,7 +227,9 @@ public:
 class piece3cases : private piece
 {
 private:
-	;	// 
+	const int NB_TUILE = 3;	// Nombre de tuiles des objets pieces3cases.
+
+	void pivote();			// Effectue les modifications principale avant les rotations
 
 public:
 	//piece3cases(const char & id, const char & t1, const char & t2, const char & t3)	// Initialisateur
@@ -341,31 +240,16 @@ public:
 	//	_tuile.push_back(tuile2);
 	//	_tuile.push_back(tuile3);
 	//}
+	piece3cases * clone();	// Copieur héréditaire
+
 	~piece3cases() { delete this; }	// Destructeur
 
+
+	void tourneGauche();	// Fait pivoter la pièce sur elle-même dans le sens anti-horaire
+	void tourneDroite();	// Fait pivoter la pièce sur elle-même dans le sens horaire
 };
 
 
-///========///
-// MÉTHODES //
-///========///
-
-// piece
-///=====
-// 
-
-
-// piece2cases
-///===========
-// 
-
-// 
-
-
-
-// piece3cases
-///===========
-// 
-
-// 
-
+///===============///
+// AUTRES MÉTHODES //
+///===============///
