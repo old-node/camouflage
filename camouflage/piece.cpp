@@ -1,19 +1,19 @@
 /* Auteur:	Olivier Lemay Dostie et Olivier G.F.
 // Date:	30 août 2017
 // Ficher:	piece.cpp
-// But:		Méthodes de l'objet pièce.
 */
 
 #include "piece.h"
 using namespace std;
 
-
+// Permet l'écriture des pièces avec l'opérater <<
 ostream & operator<<(ostream & sortie, piece & p)
 {
 	p.print(sortie);
 	return sortie;
 }
 
+///===== */
 /* PIECE */
 ///===== */
 
@@ -37,14 +37,14 @@ piece::piece(const char & nom, const char * t)
 // Initialise le nombre de tuile nécessaire pour la pièce
 void piece::initTuile(const char * t, const int NB_TUILE)
 {
-	int pos = 0;
-	for (int i = 0; i < 2; i++)
+	int pos = 0;					// Position du caractère à ajouter dans la tuile
+	for (int i = 0; i < 2; i++)		// Pour toute la matrice
 	{
 		for (int j = 0; j < 2; j++)
 		{
-			if (pos < NB_TUILE)
+			if (pos < NB_TUILE)		// Rempli la tuile selon le caractère de la chaine
 			{
-				assert(!iswspace(t[i]) | t[i] == '_');
+				assert(!iswspace(t[i]) | t[i] == ' ');	// Si un mauvais type de caractère est présent
 				_tuile[i][j]._code = t[pos];
 				_tuile[i][j]._valide = true;
 			}
@@ -62,8 +62,7 @@ void piece::initTuile(const char * t, const int NB_TUILE)
 // Copieur par l'opérateur =
 piece & piece::operator=(const piece & p)
 {
-	// *this->clone();
-	return *this;// = new piece (d(p.clone()));
+	return *this;
 }
 
 // Change le caractère qui représente la pièce
@@ -76,7 +75,7 @@ void piece::setNom(char nom)
 void piece::setTuile(const char * t)
 {
 	assert(strlen(t) == 1);
-	initTuile(t, 1);
+	initTuile(t, 1);				// Instantiation par défaut des tuiles
 }
 
 // Retourne le caractère qui représente la pièce
@@ -93,18 +92,29 @@ section piece::getTuile(int i, int j) const
 // Affiche le contenu de toutes les tuiles de la pièce
 void piece::print(ostream & sortie) const
 {
-	for (int i = 0; i < 2; i++)
+	int qteInvalide = 0;			// Valeur qui calcul le nombre de tuiles vide
+	for (int i = 0; i < 2; i++)		// Pour la matrice au complet
 	{
 		for (int j = 0; j < 2; j++)
 		{
 			if (_tuile[i][j]._valide == true)
+				// Affiche le contenu de la tuile avec le nom de la pièce
 				sortie << _nom << _tuile[i][j]._code << " ";
+			else
+			{
+				sortie << "   ";	// Remplace les tuiles invalide par des espaces
+				qteInvalide++;
+			}
 		}
-		sortie << endl;
+
+		if (qteInvalide < 2)		// Prévient de mettre une ligne pour les petites pièces
+			sortie << endl;
 	}
+	sortie << endl;
 }
 
 
+///============= */
 /* PIECE 2 CASES */
 ///============= */
 
@@ -132,9 +142,11 @@ piece2cases::~piece2cases()
 {
 	piece::~piece();
 }
+
 // Change le nombre de tuile nécessaire de la pièce
 void piece2cases::setTuile(const char * t)
 {
+	_angle = true;
 	assert(strlen(t) == NB_TUILE);
 	piece::initTuile(t, NB_TUILE);
 }
@@ -142,12 +154,29 @@ void piece2cases::setTuile(const char * t)
 // Fait pivoter la pièce sur elle-même dans le sens horaire
 void piece2cases::tourneDroite()
 {
-	swap(_tuile[0][0]._code, _tuile[1][0]._code);
-	swap(_tuile[0][0]._valide, _tuile[1][0]._valide);
-	swap(_tuile[1][0]._code, _tuile[0][1]._code);
-	swap(_tuile[1][0]._valide, _tuile[0][1]._valide);
+	if (_angle)				// Déplacement simple de l'extrémité de la pièce
+	{
+		_angle = false;
+		swap(_tuile[0][1]._code, _tuile[1][0]._code);
+		swap(_tuile[0][1]._valide, _tuile[1][0]._valide);
+	}
+	else					// Rotation complète normale
+	{
+		_angle = true;
+		swap(_tuile[0][0]._code, _tuile[0][1]._code);
+		swap(_tuile[0][0]._valide, _tuile[0][1]._valide);
+		swap(_tuile[1][0]._code, _tuile[0][0]._code);
+		swap(_tuile[1][0]._valide, _tuile[0][0]._valide);
+	}
+}
+// Obtien l'angle de la pièce
+bool piece2cases::getAngle() const
+{
+	return _angle;
 }
 
+
+///=============== */
 /* PIÈCE À 3 CASES */
 ///=============== */
 
@@ -163,12 +192,14 @@ piece3cases::piece3cases(const char & nom, const char * t)
 {
 	create(nom, t);
 }
+
 // Copieur héréditaire
 piece3cases * piece3cases::clone()
 {
 	return new piece3cases(*this);
 }
 
+// Destructeur
 piece3cases::~piece3cases()
 {
 	piece::~piece();
@@ -193,6 +224,6 @@ void piece3cases::pivote()
 void piece3cases::tourneDroite()
 {
 	pivote();
-	swap(_tuile[0][1]._code, _tuile[1][0]._code);
-	swap(_tuile[0][1]._valide, _tuile[1][0]._valide);
+	swap(_tuile[0][0]._code, _tuile[1][1]._code);
+	swap(_tuile[0][0]._valide, _tuile[1][1]._valide);
 }

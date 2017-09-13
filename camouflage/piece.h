@@ -1,7 +1,7 @@
 /* Auteur:	Olivier Lemay Dostie et Olivier G.F.
 // Date:	30 août 2017
 // Ficher:	map.cpp
-// But:		Objet du jeu utilisé pour compléter la map.
+// But:		Objets du jeu utilisé pour compléter la map.
 */
 
 #pragma once
@@ -11,11 +11,10 @@
 using namespace std;
 
 
-// Constantes de la map (à déplacer)
+// Constantes de la map
 const int LARGEUR_MAP = 4;
 const int HAUTEUR_MAP = 4;
-// Largeur \ hauteur de la map (peut être mis en paramêtre caché si les pièces font parti de la map)
-
+// Largeur \ hauteur de la map
 
 
 // Structure de tuile des pièces.
@@ -42,7 +41,7 @@ public:
 	const section * operator=
 		(section & t)				// Copieur par l'opérateur =
 	{
-		return new section(t);	// Bug: mauvaise opération pour copier ?
+		return new section(t);
 	}
 	~section()						// Destructeur
 	{
@@ -58,7 +57,6 @@ class piece
 {
 protected:
 	char _nom = '\0';			// Caractère qui représente la pièce
-	int _angle = 0;				// Angle de la pièce dans la map
 	section _tuile[2][2];		// Éléments formant la pièce
 
 	void initTuile				// Initialise le nombre de tuile nécessaire pour la pièce
@@ -95,49 +93,52 @@ public:
 
 
 // Pièces formées de 2 tuiles.
-class piece2cases : public piece
+class piece2cases : virtual public piece
 {
 private:
 	const int NB_TUILE = 2;	// Nombre de tuiles des objets pieces2cases.
+	bool _angle = true;
 
-	void pivote() {}		// 
+	void pivote() override {}		// 
 
 public:
 	piece2cases * create	// Initialisateur permettant la surcharge de paramètres
-	(const char & nom, const char * t);
+	(const char & nom, const char * t) override;
 	piece2cases
 	(const char & nom, const char * t);	// Initialisateur
 
-	piece2cases * clone();	// Copieur héréditaire
+	piece2cases * clone() override;	// Copieur héréditaire
 
-	~piece2cases();			// Destructeur
+	~piece2cases() override;			// Destructeur
 
 	void setTuile(const char * t);	// Change le nombre de tuile nécessaire de la pièce
 
-	void tourneDroite();	// Fait pivoter la pièce sur elle-même dans le sens horaire
+	void tourneDroite() override;	// Fait pivoter la pièce sur elle-même dans le sens horaire
+
+	bool getAngle() const;			// Retourne l'angle de la pièce
 };
 
 // Pièces formées de 3 tuiles.
-class piece3cases : private piece
+class piece3cases : virtual public piece
 {
 private:
 	const int NB_TUILE = 3;	// Nombre de tuiles des objets pieces3cases.
 
-	void pivote();			// Effectue les modifications principale avant les rotations
+	void pivote() override;			// Effectue les modifications principale avant les rotations
 
 public:
 	piece3cases * create	// Initialisateur permettant la surcharge de paramètres
-	(const char & nom, const char * t);
+	(const char & nom, const char * t) override;
 	piece3cases
 	(const char & nom, const char * t);	// Initialisateur
 
-	piece3cases * clone();	// Copieur héréditaire
+	piece3cases * clone() override;	// Copieur héréditaire
 
-	~piece3cases();			// Destructeur
+	~piece3cases() override;			// Destructeur
 
 	void setTuile(const char * t);
 
-	void tourneDroite();	// Fait pivoter la pièce sur elle-même dans le sens horaire
+	void tourneDroite() override;	// Fait pivoter la pièce sur elle-même dans le sens horaire
 };
 
 
