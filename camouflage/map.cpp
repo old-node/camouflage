@@ -5,56 +5,58 @@
 */
 
 #include "map.h"
-using namespace std;
 
+//Constructeur par défaut
 map::map()
 {
 
 }
 
-map::~map()
+//Constructeur avec dimensions en paramètre
+map::map(int nbLigne, int nbCol)
 {
-
+	resize(nbLigne, nbCol);
 }
 
-//Ouvre le fichier et apelle la fonction de lecture de fichier
-string map::openFile(ostream& sortie){
-	string	difficulte, nomFichier;
-
-	do
-	{
-		_entree.clear();
-		sortie << endl << "Entrer la carte à solutionner <Ex : Expert27 > : ";
-		cin >> difficulte;
-		nomFichier = "map" + difficulte + ".txt";
-		_entree.open(nomFichier.c_str());
-
-		if (!_entree.is_open()) // si fichier n’existe pas
-			sortie << "Le fichier < " << nomFichier << " > n'existe pas! " << endl;
-
-	} while (!_entree.is_open());//tant que le fichier n’a pas été ouvert
-	initMap();
-	return difficulte;
+//Destructeur par défaut
+map::~map()
+{
+	_map.clear();
 }
 
 //Lit le fichier et initialise la carte avec
-void map::initMap() {
-	int tailleVX, tailleVY;
-	_entree >> tailleVX;
-	_entree.ignore();
-	_entree >> tailleVY;
-	_map.resize(tailleVX, vector<char>(tailleVY));
-	for (int i = 0; i < tailleVX; i++) {
-		for (int j = 0; j < tailleVY; j++) {
-			_entree >> _map[i][j];
+void map::init(ifstream& entree) {
+	assert(entree.is_open());
+
+	int nbLigne, nbCol;
+
+	//lecture des dimensions de la map
+	entree >> nbLigne;						
+	entree.ignore();
+	entree >> nbCol;
+	
+	resize(nbLigne, nbCol);
+
+	//initialisation de la map à partir du fichier
+	for (int i = 0; i < nbLigne; i++) {		
+		for (int j = 0; j < nbCol; j++) {
+			entree >> _map[i][j];
 		}
 	}
-	_entree.close();
+}
+
+//resize la matrice selon les dimensions
+void map::resize(int nbLigne, int nbCol)
+{
+	assert(nbLigne >= 0 && nbCol >= 0);
+
+	//Redimmensionne le vecteur extérieur et le vecteur intérieur dans la même ligne
+	_map.resize(nbLigne, vector<char>(nbCol));
 }
 
 //Affiche le contenu de la carte
 void map::print(ostream& sortie)const {
-	sortie << "Contenu original de la planche du fichier :" << endl;
+
 	for (int i = 0; i < _map.size(); i++) {
 		for (int j = 0; j < _map[0].size(); j++) {
 			sortie << _map[i][j] << " ";
@@ -69,6 +71,25 @@ ostream& operator<<(ostream& sortie, const map& printMap) {
 }
 
 //Retourne le contenu d'une case de la carte selon sa position X,Y
-char map::getCase(int x, int y)const {
-	return _map[x][y];
+char map::getCase(int i, int j)const {
+	assert(i >= 0 && i < _map.size() && j >= 0 && j < _map[0].size());
+
+	return _map[i][j];
+}
+
+//Retourne le nombre de ligne du vecteur (Taille du grand vecteur)
+int map::getSizeLine()const {
+	return _map.size();
+}
+
+//Retourne le nombre de colonnes du vecteur (Taille des petits vecteurs)
+int map::getSizeCol()const {
+	return _map[0].size();
+}
+
+//Modifie le contenu d'une case de la carte selon sa position X,Y
+void  map::setCase(char val, int i, int j) {
+	assert(i >= 0 && i < _map.size() && j >= 0 && j < _map[0].size());
+
+	_map[i][j] = val;
 }
