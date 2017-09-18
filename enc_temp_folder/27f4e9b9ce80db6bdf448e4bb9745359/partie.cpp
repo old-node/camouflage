@@ -15,8 +15,6 @@ void partie::initialiser() {
 	openFile(cout, entree, difficulte);
 	_boardJeu.init(entree);
 	_solution.resize(_boardJeu.getSizeLine(), vector<string>(_boardJeu.getSizeCol()));
-	
-	
 	_pieces.push_back(new piece3cases('U', " PO"));
 	_pieces.push_back(new piece3cases('V', "P O"));
 	_pieces.push_back(new piece3cases('W', " OP"));
