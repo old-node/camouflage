@@ -8,8 +8,8 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
-#include <saisieSecurisee.h>
-//#include "partie.h"
+//#include <saisieSecurisee.h>
+#include "partie.h"
 #include "map.h"
 #include "piece.h"
 using namespace std;
@@ -17,6 +17,7 @@ using namespace std;
 /* Prototypes des fonctions */
 ///======================== */
 
+void openFile(ostream& sortie, ifstream& entree, string& difficulte);	//Ouvre le fichier selon le nom demander
 void tournePieces(vector<piece*> & vec);
 void printPiece(vector<piece*> & vec, const int & i);
 
@@ -30,18 +31,30 @@ int main()
 	//// Test Carte
 
 	map carte;
+	ifstream entree;
+	string	difficulte;
 
-	carte.openFile(cout);
+	//Initialise la carte grace à un fichier
+	openFile(cout, entree, difficulte);
+	carte.init(entree);
+
+	//Test des différentes façon d'imprimer la carte
 	carte.print(cout);
 	cout << endl;
 	cout << carte;
 	cout << endl;
+
+	//Cherche une case dans la carte et imprime son charactère
 	char getCase;
 	getCase = carte.getCase(0, 0);
 	cout << getCase;
 	cout << endl;
 
-	pause();
+	getCase = carte.getCase(2, 3);
+	cout << getCase;
+	cout << endl;
+
+	system("pause");
 
 
 	//// Test Pièces
@@ -72,7 +85,7 @@ int main()
 			printPiece(vec, j);
 	}
 
-	pause();
+	system("pause");
 
 	return 1;
 }
@@ -97,4 +110,22 @@ void printPiece(vector<piece*> & vec, const int & i)
 		piece3cases *morceau = dynamic_cast<piece3cases*>(vec.at(i));
 		morceau->print(cout);
 	}
+}
+
+//Ouvre le fichier selon le nom demander
+void openFile(ostream& sortie, ifstream& entree, string& difficulte) {
+	string nomFichier;
+
+	do
+	{
+		entree.clear();
+		sortie << endl << "Entrer la carte à solutionner <Ex : Expert27 > : ";
+		cin >> difficulte;
+		nomFichier = "map" + difficulte + ".txt";
+		entree.open(nomFichier.c_str());
+
+		if (!entree.is_open()) // si fichier n’existe pas
+			sortie << "Le fichier < " << nomFichier << " > n'existe pas! " << endl;
+
+	} while (!entree.is_open());//tant que le fichier n’a pas été ouvert
 }
