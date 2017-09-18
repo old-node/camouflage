@@ -10,13 +10,21 @@ using namespace std;
 
 //initialise le jeu
 void partie::initialiser() {
+	//On initialise la carte avec le fichier
 	ifstream entree;
 	string	difficulte;
 	openFile(cout, entree, difficulte);
 	_boardJeu.init(entree);
+
+	//On initialise le tableau de solution
 	_solution.resize(_boardJeu.getSizeLine(), vector<string>(_boardJeu.getSizeCol()));
-	
-	
+	for (int i = 0; i < _solution.size(); i++) {
+		for (int j = 0; j < _solution[0].size(); j++) {
+			_solution[i][j] = " ";
+		}
+	}
+
+	//On initialise les 6 pièces
 	_pieces.push_back(new piece3cases('U', " PO"));
 	_pieces.push_back(new piece3cases('V', "P O"));
 	_pieces.push_back(new piece3cases('W', " OP"));
@@ -37,7 +45,8 @@ bool partie::solutionner(int pieceCourante) {
 				{
 					placerPiece(*_pieces[pieceCourante], x, y);		
 
-					partie::print(cout);
+					print(cout);
+					cout << endl;
 					
 					if (pieceCourante == 5)							// 6 pièces placées, solution trouvée
 						return true;
@@ -92,8 +101,10 @@ bool partie::siPieceMatch(const piece& p, int x, int y) {
 void partie::placerPiece(const piece & p, int x, int y) {
 	for (int i = 0; i < 2; i++)
 		for (int j = 0; j < 2; j++)
-			if (p.getTuile(j, i) != '\0')
-				_solution[x + j][y + i] = p.getTuile(j, i);
+			if (p.getTuile(j, i) != '\0') {
+				_solution[x + j][y + i] = p.getNom();
+				_solution[x + j][y + i].back() = p.getTuile(j, i);
+			}
 }
 
 //retire la pièce la solution à x, y

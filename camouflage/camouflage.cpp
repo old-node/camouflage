@@ -57,7 +57,7 @@ int main()
 	//system("pause");
 
 
-	////// Test Pièces
+	//// Test Pièces
 
 	//vector<piece*> vec;			// Vecteur comprenant toutes les pièces du jeu
 
@@ -71,17 +71,17 @@ int main()
 	//for (int i = 0; i < 3; i++)
 	//	vec.at(5)->tourneDroite();
 
-	////cout << "\n\nVoici toutes les formes sous leur angles d'origine.\n";
-	////for (int i = 0; i < vec.size(); i++)		// Affichage initial
-	////	printPiece(vec, i);
-	////
-	////for (int i = 0; i < 3; i++)					// Pour tout les autres angles
-	////{
-	////	cout << "\n\nVoici toutes les formes sous leur angle suivant\n";
-	////	tournePieces(vec);						// Pour toutes les pièces
-	////	for (int j = 0; j < vec.size(); j++)
-	////		printPiece(vec, j);
-	////}
+	//cout << "\n\nVoici toutes les formes sous leur angles d'origine.\n";
+	//for (int i = 0; i < vec.size(); i++)		// Affichage initial
+	//	printPiece(vec, i);
+	//
+	//for (int i = 0; i < 3; i++)					// Pour tout les autres angles
+	//{
+	//	cout << "\n\nVoici toutes les formes sous leur angle suivant\n";
+	//	tournePieces(vec);						// Pour toutes les pièces
+	//	for (int j = 0; j < vec.size(); j++)
+	//		printPiece(vec, j);
+	//}
 
 	//system("pause");
 
@@ -90,9 +90,9 @@ int main()
 
 	partie jeu;
 
+	jeu.initialiser();
 	jeu.solutionner(0);
 	jeu.print(cout);
-
 	system("pause");
 
 	return 1;
