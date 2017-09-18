@@ -5,6 +5,7 @@
 */
 
 #pragma once
+#include <string>
 #include "map.h"
 #include "piece.h"
 using namespace std;
@@ -12,7 +13,7 @@ using namespace std;
 class partie
 {
 private:
-	piece *_pieces[6];	// Les 6 pièces du casse tête
+	vector<piece*> _piece;			// Vecteur comprenant toutes les pièces du jeu
 	map _boardJeu;		// Map du casse tête
 	vector<vector<string>> _solution; //La solution du casse tête
 	bool _trouve; //Si une solution a été trouvée
@@ -25,6 +26,7 @@ public:
 	bool placerPiece(const piece& p, int x, int y);		//Place la pièce dans la solution à x, y
 	bool retirerPiece(const piece& p, int x, int y);	//retire la pièce la solution à x, y
 	void print(ostream& sortie)const;					//affiche la solution
+	void openFile(ostream& sortie, ifstream& entree, string& difficulte); //Ouvre le fichier selon le nom demander
 };
 //affiche la solution
 ostream& operator<<(ostream& sortie, const partie& jeu);

@@ -9,7 +9,18 @@ using namespace std;
 
 //initialise le jeu
 void partie::initialiser() {
+	map carte;
+	ifstream entree;
+	string	difficulte;
+	openFile(cout, entree, difficulte);
+	carte.init(entree);
 	_solution.resize(_boardJeu.getSizeLine(), vector<string>(_boardJeu.getSizeCol()));
+	_piece.push_back(new piece3cases('U', " PO"));
+	_piece.push_back(new piece3cases('V', "P O"));
+	_piece.push_back(new piece3cases('W', " OP"));
+	_piece.push_back(new piece2cases('X', "PP"));
+	_piece.push_back(new piece2cases('Y', "PO"));
+	_piece.push_back(new piece3cases('Z', "O  "));
 }
 
 //Trouver la position des 6 pièces qui solutionnent le casse-tête selon la map
@@ -23,7 +34,7 @@ bool partie::solutionner(int pieceCourante) {
 				if (siPieceMatch(*_pieces[pieceCourante], x, y))	// 
 				{
 					placerPiece(*_pieces[pieceCourante], x, y);
-
+					partie::print(cout);
 					if (pieceCourante == 6)							// 6 pièces placées, solution trouvée
 						return true;
 
@@ -77,7 +88,7 @@ bool partie::siPieceMatch(const piece& p, int x, int y) {
 bool partie::placerPiece(const piece & p, int x, int y) {
 	for (int i = 0; i < 2; i++)
 		for (int j = 0; j < 2; j++)
-			if (p.getTuile(j, i)._code != '\0')
+			if (p.getTuile(j, i) != '\0')
 				_solution[x + j][y + i] = p.getTuile(j, i)._code;
 }
 
@@ -85,7 +96,7 @@ bool partie::placerPiece(const piece & p, int x, int y) {
 bool partie::retirerPiece(const piece & p, int x, int y) {
 	for (int i = 0; i < 2; i++)
 		for (int j = 0; j < 2; j++)
-			if (p.getTuile(j, i)._code != '\0')
+			if (p.getTuile(j, i) != '\0')
 				_solution[x + j][y + i] = " ";
 }
 
@@ -97,4 +108,22 @@ void partie::print(ostream & sortie)const {
 		}
 		sortie << endl;
 	}
+}
+
+//Ouvre le fichier selon le nom demander
+void partie::openFile(ostream& sortie, ifstream& entree, string& difficulte) {
+	string nomFichier;
+
+	do
+	{
+		entree.clear();
+		sortie << endl << "Entrer la carte à solutionner <Ex : Expert27 > : ";
+		cin >> difficulte;
+		nomFichier = "map" + difficulte + ".txt";
+		entree.open(nomFichier.c_str());
+
+		if (!entree.is_open()) // si fichier n’existe pas
+			sortie << "Le fichier < " << nomFichier << " > n'existe pas! " << endl;
+
+	} while (!entree.is_open());//tant que le fichier n’a pas été ouvert
 }
