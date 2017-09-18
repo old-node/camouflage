@@ -18,8 +18,37 @@ bool partie::solutionner(int pieceCourante) {
 }
 
 //Vérifie si une pièce peut être à la pos. x,y dans la map et s’il y a déjà une pièce dans la solution à ces mêmes coordonnées.
-bool partie::siPieceMatch(const piece &, int x, int y) {
+bool partie::siPieceMatch(const piece& p, int x, int y) {
+	//Pour les 4 cases de la pièce
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 2; j++) {
 
+			//On vérifie si la case de la pièce est valide
+			if (p.getTuile(i, j) != '\0') {
+
+				//Si la case de la pièce n'est pas en dehors de la carte
+				if ((x + i) < _boardJeu.getSizeCol() && (y + j) < _boardJeu.getSizeLine()) {
+
+					//Si la case corespondante de la solution est vide
+					if (_solution[x + i][y + j] == " ") {
+
+						//Si la tuile est un poisson mais que la case sur la carte n'est pas de l'eau on retourne faux
+						if (p.getTuile(i, j) == 'P' && _boardJeu.getCase(x + i, y + j) != 'E')
+							return false;
+
+						//Si la tuile est un ours mais que la case sur la carte n'est pas une banquise on retourne faux
+						if (p.getTuile(i, j) == 'O' && _boardJeu.getCase(x + i, y + j) != 'B')
+							return false;
+					}
+					else
+						return false;
+				}
+				else
+					return false;
+			}
+		}
+	}
+	return true;
 }
 
 //Place la pièce dans la solution à x, y

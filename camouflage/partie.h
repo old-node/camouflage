@@ -21,7 +21,7 @@ public:
 	//Trouver la position des 6 pièces qui solutionnent le casse-tête selon la map
 	bool solutionner(int pieceCourante);
 	//Vérifie si une pièce peut être à la pos. x,y dans la map et s’il y a déjà une pièce dans la solution à ces mêmes coordonnées.
-	bool siPieceMatch(const piece &, int x, int y);
+	bool siPieceMatch(const piece& p, int x, int y);
 	bool placerPiece(const piece& p, int x, int y);		//Place la pièce dans la solution à x, y
 	bool retirerPiece(const piece& p, int x, int y);	//retire la pièce la solution à x, y
 	void print(ostream& sortie)const;					//affiche la solution

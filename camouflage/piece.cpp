@@ -84,9 +84,9 @@ char piece::getNom() const
 	return _nom;
 }
 // Retourne une des tuile de la pièce
-section piece::getTuile(int i, int j) const
+char piece::getTuile(int i, int j) const
 {
-	return _tuile[i][j];
+	return _tuile[i][j]._code;
 }
 
 // Affiche le contenu de toutes les tuiles de la pièce

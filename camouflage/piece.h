@@ -83,7 +83,7 @@ public:
 	(const char * t);
 
 	char getNom() const;		// Retourne le caractère qui représente la pièce
-	section getTuile(int i, int j) const;	// Retourne une des tuile de la pièce
+	char getTuile(int i, int j) const;	// Retourne une des tuile de la pièce
 
 	void print(ostream & sortie) const;	// Affiche le contenu de toutes les tuiles de la pièce
 };
