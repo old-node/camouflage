@@ -74,7 +74,7 @@ int main()
 	//cout << "\n\nVoici toutes les formes sous leur angles d'origine.\n";
 	//for (int i = 0; i < vec.size(); i++)		// Affichage initial
 	//	printPiece(vec, i);
-
+	//
 	//for (int i = 0; i < 3; i++)					// Pour tout les autres angles
 	//{
 	//	cout << "\n\nVoici toutes les formes sous leur angle suivant\n";
@@ -90,6 +90,10 @@ int main()
 
 	partie jeu;
 
+	if (jeu.solutionner(0))
+	{
+		jeu.print(cout);
+	}
 
 	return 1;
 }
