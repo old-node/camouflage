@@ -51,7 +51,6 @@ public:
 };
 
 
-
 // Objet parent des pièces du jeu de base.
 class piece
 {

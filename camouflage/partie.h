@@ -18,6 +18,8 @@ private:
 
 public:
 	partie();
+
+
 	~partie();
 
 };
