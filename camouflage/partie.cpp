@@ -5,6 +5,7 @@
 */
 
 #include "partie.h"
+#include <string>
 using namespace std;
 
 //initialise le jeu
@@ -22,9 +23,11 @@ bool partie::solutionner(int pieceCourante) {
 			{
 				if (siPieceMatch(*_pieces[pieceCourante], x, y))	// 
 				{
-					placerPiece(*_pieces[pieceCourante], x, y);
+					placerPiece(*_pieces[pieceCourante], x, y);		
 
-					if (pieceCourante == 6)							// 6 pièces placées, solution trouvée
+					partie::print(cout);
+					
+					if (pieceCourante == 5)							// 6 pièces placées, solution trouvée
 						return true;
 
 					if (solutionner(pieceCourante + 1))
@@ -77,15 +80,15 @@ bool partie::siPieceMatch(const piece& p, int x, int y) {
 bool partie::placerPiece(const piece & p, int x, int y) {
 	for (int i = 0; i < 2; i++)
 		for (int j = 0; j < 2; j++)
-			if (p.getTuile(j, i)._code != '\0')
-				_solution[x + j][y + i] = p.getTuile(j, i)._code;
+			if (p.getTuile(j, i) != '\0')
+				_solution[x + j][y + i] = p.getTuile(j, i);
 }
 
 //retire la pièce la solution à x, y
 bool partie::retirerPiece(const piece & p, int x, int y) {
 	for (int i = 0; i < 2; i++)
 		for (int j = 0; j < 2; j++)
-			if (p.getTuile(j, i)._code != '\0')
+			if (p.getTuile(j, i) != '\0')
 				_solution[x + j][y + i] = " ";
 }
 
