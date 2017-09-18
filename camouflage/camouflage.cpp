@@ -30,46 +30,46 @@ int main()
 
 	//// Test Carte
 
-	map carte;
-	ifstream entree;
-	string	difficulte;
+	//map carte;
+	//ifstream entree;
+	//string	difficulte;
 
-	//Initialise la carte grace à un fichier
-	openFile(cout, entree, difficulte);
-	carte.init(entree);
+	////Initialise la carte grace à un fichier
+	//openFile(cout, entree, difficulte);
+	//carte.init(entree);
 
-	//Test des différentes façon d'imprimer la carte
-	carte.print(cout);
-	cout << endl;
-	cout << carte;
-	cout << endl;
+	////Test des différentes façon d'imprimer la carte
+	//carte.print(cout);
+	//cout << endl;
+	//cout << carte;
+	//cout << endl;
 
-	//Cherche une case dans la carte et imprime son charactère
-	char getCase;
-	getCase = carte.getCase(0, 0);
-	cout << getCase;
-	cout << endl;
+	////Cherche une case dans la carte et imprime son charactère
+	//char getCase;
+	//getCase = carte.getCase(0, 0);
+	//cout << getCase;
+	//cout << endl;
 
-	getCase = carte.getCase(2, 3);
-	cout << getCase;
-	cout << endl;
+	//getCase = carte.getCase(2, 3);
+	//cout << getCase;
+	//cout << endl;
 
-	system("pause");
+	//system("pause");
 
 
 	//// Test Pièces
 
-	vector<piece*> vec;			// Vecteur comprenant toutes les pièces du jeu
+	//vector<piece*> vec;			// Vecteur comprenant toutes les pièces du jeu
 
-	vec.push_back(new piece3cases('U', " PO"));
-	vec.push_back(new piece3cases('V', "P O"));
-	vec.push_back(new piece3cases('W', " OP"));
-	vec.push_back(new piece2cases('X', "PP"));
-	vec.push_back(new piece2cases('Y', "PO"));
-	vec.push_back(new piece3cases('Z', "O  "));
-	// Fait pivoter la pièce Z pour qu'elle débute de la bonne position
-	for (int i = 0; i < 3; i++)
-		vec.at(5)->tourneDroite();
+	//vec.push_back(new piece3cases('U', " PO"));
+	//vec.push_back(new piece3cases('V', "P O"));
+	//vec.push_back(new piece3cases('W', " OP"));
+	//vec.push_back(new piece2cases('X', "PP"));
+	//vec.push_back(new piece2cases('Y', "PO"));
+	//vec.push_back(new piece3cases('Z', "O  "));
+	//// Fait pivoter la pièce Z pour qu'elle débute de la bonne position
+	//for (int i = 0; i < 3; i++)
+	//	vec.at(5)->tourneDroite();
 
 	//cout << "\n\nVoici toutes les formes sous leur angles d'origine.\n";
 	//for (int i = 0; i < vec.size(); i++)		// Affichage initial
@@ -83,17 +83,17 @@ int main()
 	//		printPiece(vec, j);
 	//}
 
-	system("pause");
+	//system("pause");
 
 	
 	// Solutionner le jeu
 
 	partie jeu;
 
-	if (jeu.solutionner(0))
-	{
-		jeu.print(cout);
-	}
+	jeu.initialiser();
+	jeu.solutionner(0);
+	jeu.print(cout);
+	system("pause");
 
 	return 1;
 }
