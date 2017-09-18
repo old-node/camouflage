@@ -12,8 +12,8 @@ using namespace std;
 class partie
 {
 private:
-	piece *_pieces[6]; //les 6 pièces du casse tête
-	map _boardJeu; //map du casse tête
+	piece *_pieces[6];	// Les 6 pièces du casse tête
+	map _boardJeu;		// Map du casse tête
 	vector<vector<string>> _solution; //La solution du casse tête
 	bool _trouve; //Si une solution a été trouvée
 public:
