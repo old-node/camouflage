@@ -35,18 +35,31 @@ void partie::initialiser() {
 
 //Trouver la position des 6 pièces qui solutionnent le casse-tête selon la map
 bool partie::solutionner(int pieceCourante) {
+	static int nbItteration = 1;
+
+
 	for (int r = 0; r < 4; r++)										// Pour chaque rotation
 	{
-		for (int x = 0; x < _boardJeu.getSizeCol(); x++)			// Pour 4 position de ligne
+		int etendueCol = _boardJeu.getSizeCol();
+		int etendueLine = _boardJeu.getSizeLine();
+		
+		// Essais pour rendre le brute force plus performant (à tester)
+		//if (dynamic_cast<piece2cases*> (_pieces[pieceCourante])->getAngle())
+		//	etendueCol--;
+		//else
+		//	etendueLine--;
+
+		for (int x = 0; x < etendueCol; x++)						// Pour 4 position de ligne
 		{
-			for (int y = 0; y < _boardJeu.getSizeLine(); y++)		// Pour 4 position de colone
+			for (int y = 0; y < etendueLine; y++)					// Pour 4 position de colone
 			{
 				if (siPieceMatch(*_pieces[pieceCourante], x, y))	// 
 				{
 					placerPiece(*_pieces[pieceCourante], x, y);		
 
 					print(cout);
-					cout << endl;
+					cout << nbItteration << "e ittération de la solution." << endl << endl;
+					nbItteration++;
 					
 					if (pieceCourante == 5)							// 6 pièces placées, solution trouvée
 						return true;
@@ -56,6 +69,7 @@ bool partie::solutionner(int pieceCourante) {
 
 					retirerPiece(*_pieces[pieceCourante], x, y);
 				}
+				
 			}
 		}
 		_pieces[pieceCourante]->tourneDroite();
@@ -103,7 +117,7 @@ void partie::placerPiece(const piece & p, int x, int y) {
 		for (int j = 0; j < 2; j++)
 			if (p.getTuile(j, i) != '\0') {
 				_solution[x + j][y + i] = p.getNom();
-				_solution[x + j][y + i].back() = p.getTuile(j, i);
+				_solution[x + j][y + i] += p.getTuile(j, i);
 			}
 }
 
@@ -141,4 +155,10 @@ void partie::openFile(ostream& sortie, ifstream& entree, string& difficulte) {
 			sortie << "Le fichier < " << nomFichier << " > n'existe pas! " << endl;
 
 	} while (!entree.is_open());//tant que le fichier n’a pas été ouvert
+}
+
+ostream & operator<<(ostream & sortie, const partie & jeu)
+{
+	// TODO: insert return statement here
+	return sortie;
 }

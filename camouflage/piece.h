@@ -55,34 +55,34 @@ public:
 class piece
 {
 protected:
-	char _nom = '\0';			// Caractère qui représente la pièce
-	section _tuile[2][2];		// Éléments formant la pièce
-
-	void initTuile				// Initialise le nombre de tuile nécessaire pour la pièce
+	char _nom = '\0';				// Caractère qui représente la pièce
+	section _tuile[2][2];			// Éléments formant la pièce
+	
+	void initTuile					// Initialise le nombre de tuile nécessaire pour la pièce
 	(const char * t, const int NB_TUILE);
-	virtual void pivote() = 0;	// Effectue les modifications principale avant les rotations
+	virtual void pivote() = 0;		// Effectue les modifications principale avant les rotations
 
 public:
-	virtual piece * create		// Initialisateur par virtualisation
+	virtual piece * create			// Initialisateur par virtualisation
 	(const char & nom, const char * t);
-	piece();					// Initialisateur par défaut
+	piece();						// Initialisateur par défaut
 	piece(const char & nom, const char * t);
 
-	virtual piece *				// Copieur héréditaire
+	virtual piece *					// Copieur héréditaire
 		piece::clone() = 0;
-	piece & operator=			// Copieur par l'opérateur =
+	piece & operator=				// Copieur par l'opérateur =
 		(const piece & p);
 
-	virtual ~piece() = default;	// Destructeur
+	virtual ~piece() = default;		// Destructeur
 
 	virtual void tourneDroite() = 0;// Fait pivoter la pièce sur elle-même dans le sens horaire
 
 	/// Setteur
-	void setNom(char nom);		// Change le caractère qui représente la pièce
-	virtual void setTuile		// Change le contenu des tuiles de la pièce
+	void setNom(char nom);			// Change le caractère qui représente la pièce
+	virtual void setTuile			// Change le contenu des tuiles de la pièce
 	(const char * t);
 
-	char getNom() const;		// Retourne le caractère qui représente la pièce
+	char getNom() const;			// Retourne le caractère qui représente la pièce
 	char getTuile(int i, int j) const;	// Retourne une des tuile de la pièce
 
 	void print(ostream & sortie) const;	// Affiche le contenu de toutes les tuiles de la pièce
@@ -95,20 +95,18 @@ public:
 class piece2cases : virtual public piece
 {
 private:
-	const int NB_TUILE = 2;	// Nombre de tuiles des objets pieces2cases.
+	const int NB_TUILE = 2;			// Nombre de tuiles des objets pieces2cases.
 	bool _angle = true;
 
 	void pivote() override {}		// 
 
 public:
-	piece2cases * create	// Initialisateur permettant la surcharge de paramètres
-	(const char & nom, const char * t) override;
-	piece2cases
-	(const char & nom, const char * t);	// Initialisateur
-
+	// Initialisateur permettant la surcharge de paramètres
+	piece2cases * create(const char & nom, const char * t) override;
+	piece2cases(const char & nom, const char * t);	// Initialisateur
 	piece2cases * clone() override;	// Copieur héréditaire
 
-	~piece2cases() override;			// Destructeur
+	~piece2cases() override;		// Destructeur
 
 	void setTuile(const char * t);	// Change le nombre de tuile nécessaire de la pièce
 
@@ -121,19 +119,19 @@ public:
 class piece3cases : virtual public piece
 {
 private:
-	const int NB_TUILE = 3;	// Nombre de tuiles des objets pieces3cases.
+	const int NB_TUILE = 3;			// Nombre de tuiles des objets pieces3cases.
 
 	void pivote() override;			// Effectue les modifications principale avant les rotations
 
 public:
-	piece3cases * create	// Initialisateur permettant la surcharge de paramètres
+	piece3cases * create			// Initialisateur permettant la surcharge de paramètres
 	(const char & nom, const char * t) override;
 	piece3cases
 	(const char & nom, const char * t);	// Initialisateur
 
 	piece3cases * clone() override;	// Copieur héréditaire
 
-	~piece3cases() override;			// Destructeur
+	~piece3cases() override;		// Destructeur
 
 	void setTuile(const char * t);
 
