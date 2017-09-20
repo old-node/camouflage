@@ -103,7 +103,7 @@ void partie::placerPiece(const piece & p, int x, int y) {
 		for (int j = 0; j < 2; j++)
 			if (p.getTuile(j, i) != '\0') {
 				_solution[x + j][y + i] = p.getNom();
-				_solution[x + j][y + i].back() = p.getTuile(j, i);
+				_solution[x + j][y + i] += p.getTuile(j, i);
 			}
 }
 
