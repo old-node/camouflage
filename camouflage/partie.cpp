@@ -9,12 +9,19 @@
 using namespace std;
 
 //initialise le jeu
-void partie::initialiser() {
+void partie::initialiser(ofstream& sortie) {
 	//On initialise la carte avec le fichier
 	ifstream entree;
-	string	difficulte;
-	openFile(cout, entree, difficulte);
+	openFile(cout, entree);
 	_boardJeu.init(entree);
+
+	//On ouvre le fichier de sortie et on inscrit les dimensions de la carte dedans
+	sortie.open("solution" + difficulte + ".txt");
+	sortie << _boardJeu.getSizeLine() << ", " << _boardJeu.getSizeCol() << endl << endl;
+
+	//On affiche la carte à solutionner
+	cout << "Contenu original de la planche du fichier :" << endl;
+	cout << _boardJeu;
 
 	//On initialise le tableau de solution
 	_solution.resize(_boardJeu.getSizeLine(), vector<string>(_boardJeu.getSizeCol()));
@@ -35,47 +42,41 @@ void partie::initialiser() {
 
 //Trouver la position des 6 pièces qui solutionnent le casse-tête selon la map
 bool partie::solutionner(int pieceCourante) {
-	static int nbItteration = 1;
-
-
 	for (int r = 0; r < 4; r++)										// Pour chaque rotation
 	{
-		int etendueCol = _boardJeu.getSizeCol();
-		int etendueLine = _boardJeu.getSizeLine();
-		
-		// Essais pour rendre le brute force plus performant (à tester)
-		//if (dynamic_cast<piece2cases*> (_pieces[pieceCourante])->getAngle())
-		//	etendueCol--;
-		//else
-		//	etendueLine--;
-
-		for (int x = 0; x < etendueCol; x++)						// Pour 4 position de ligne
+		for (int x = 0; x < _boardJeu.getSizeCol(); x++)			// Pour 4 position de ligne
 		{
-			for (int y = 0; y < etendueLine; y++)					// Pour 4 position de colone
+			for (int y = 0; y < _boardJeu.getSizeLine(); y++)		// Pour 4 position de colone
 			{
 				if (siPieceMatch(*_pieces[pieceCourante], x, y))	// 
 				{
-					placerPiece(*_pieces[pieceCourante], x, y);		
+					placerPiece(*_pieces[pieceCourante], x, y);
 
 					print(cout);
-					cout << nbItteration << "e ittération de la solution." << endl << endl;
-					nbItteration++;
-					
+					cout << endl;
+
 					if (pieceCourante == 5)							// 6 pièces placées, solution trouvée
+					{
+						_trouve = true;
 						return true;
+					}
 
 					if (solutionner(pieceCourante + 1))
+					{
+						_trouve = true;
 						return true;
+					}
 
 					retirerPiece(*_pieces[pieceCourante], x, y);
 				}
-				
 			}
 		}
 		_pieces[pieceCourante]->tourneDroite();
 	}
+	_trouve = false;
 	return false;
 }
+
 
 //Vérifie si une pièce peut être à la pos. x,y dans la map et s’il y a déjà une pièce dans la solution à ces mêmes coordonnées.
 bool partie::siPieceMatch(const piece& p, int x, int y) {
@@ -140,7 +141,7 @@ void partie::print(ostream & sortie)const {
 }
 
 //Ouvre le fichier selon le nom demander
-void partie::openFile(ostream& sortie, ifstream& entree, string& difficulte) {
+void partie::openFile(ostream& sortie, ifstream& entree) {
 	string nomFichier;
 
 	do
