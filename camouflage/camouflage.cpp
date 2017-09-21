@@ -19,7 +19,6 @@ using namespace std;
 //Ouvre le fichier selon le nom demander
 void openFile(ostream& sortie, ifstream& entree, string& difficulte);	
 void printPiece(vector<piece*> & vec, const int & i);
-//void tournePieces(vector<piece*> & vec);
 
 /* Programme principal */
 ///=================== */
