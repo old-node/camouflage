@@ -1,2 +1,3 @@
 4, 4
 
+Aucune solution n'est possible avec les pièces aloués.

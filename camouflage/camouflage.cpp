@@ -16,8 +16,9 @@ using namespace std;
 /* Prototypes des fonctions */
 ///======================== */
 
-//Ouvre le fichier selon le nom demander
-void openFile(ostream& sortie, ifstream& entree, string& difficulte);	
+// Ouvre le fichier selon le nom demander
+void openFile(ostream & sortie, ifstream & entree, string & difficulte);
+// 
 void printPiece(vector<piece*> & vec, const int & i);
 
 /* Programme principal */
@@ -25,13 +26,14 @@ void printPiece(vector<piece*> & vec, const int & i);
 int main()
 {
 	setlocale(LC_CTYPE, "fra");
+
 	//// Solutionner le jeu
 
-	partie jeu;
-	ofstream sortie;			//Fichier de sortie de la solution
+	partie jeu;					// Objet pour trouver la solution du jeu
+	ofstream sortie;			// Fichier de sortie de la solution
 
 	jeu.initialiser(sortie);
-	
+
 	if (jeu.solutionner(0))
 	{
 		cout << "Contenu de la planche solution :" << endl;
@@ -40,8 +42,8 @@ int main()
 	}
 	else
 	{
-		cout << "Aucune solution n'est possible avec les piÃ¨ces alouÃ©s." << endl;
-		sortie << "Aucune solution n'est possible avec les piÃ¨ces alouÃ©s." << endl;
+		cout << "Aucune solution n'est possible avec les pièces aloués." << endl;
+		sortie << "Aucune solution n'est possible avec les pièces aloués." << endl;
 	}
 	system("pause");
 
@@ -51,13 +53,13 @@ int main()
 /* Fonctions */
 ///========= */
 
-// Fait pivoter les piÃ¨ces du jeu
+// Fait pivoter les pièces du jeu
 void tournePieces(vector<piece*> & vec)
 {
 	for (int i = 0; i < vec.size(); i++)
 		vec.at(i)->tourne();
 }
-// Affiche les piÃ¨ces dans la console selon leur type
+// Affiche les pièces dans la console selon leur type
 void printPiece(vector<piece*> & vec, const int & i)
 {
 	piece2cases *morceau = dynamic_cast<piece2cases*>(vec.at(i));
@@ -70,20 +72,20 @@ void printPiece(vector<piece*> & vec, const int & i)
 	}
 }
 
-//Ouvre le fichier selon le nom demander
-void openFile(ostream& sortie, ifstream& entree, string& difficulte) {
+// Ouvre le fichier selon le nom demander
+void openFile(ostream & sortie, ifstream & entree, string & difficulte)
+{
 	string nomFichier;
-
 	do
 	{
 		entree.clear();
-		sortie << endl << "Entrer la carte Ã  solutionner <Ex : Expert27 > : ";
+		sortie << endl << "Entrer la carte à solutionner <Ex : Expert27 > : ";
 		cin >> difficulte;
 		nomFichier = "map" + difficulte + ".txt";
 		entree.open(nomFichier.c_str());
 
-		if (!entree.is_open()) // si fichier nâ€™existe pas
+		if (!entree.is_open())		// Si fichier n'existe pas
 			sortie << "Le fichier < " << nomFichier << " > n'existe pas! " << endl;
 
-	} while (!entree.is_open());//tant que le fichier nâ€™a pas Ã©tÃ© ouvert
+	} while (!entree.is_open());	// Tant que le fichier n'est pas été ouvert
 }

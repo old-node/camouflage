@@ -43,8 +43,8 @@ void piece::initTuile(const char * t)
 		for (int j = 0; j < 2; j++)
 		{
 			if (pos < _nbTuile)		// Rempli la tuile selon le caractère de la chaine
-			{
-				assert(!iswspace(t[i]) | t[i] == ' ');	// Si un mauvais type de caractère est présent
+			{	// Si un mauvais type de caractère est présent
+				assert(!iswspace(t[i]) | t[i] == ' ');
 				_tuile[i][j]._code = t[pos];
 				_tuile[i][j]._valide = true;
 			}
@@ -94,7 +94,8 @@ void piece::print(ostream & sortie) const
 				// Affiche le contenu de la tuile avec le nom de la pièce
 				sortie << _nom << _tuile[i][j]._code << " ";
 			else
-				sortie << "   ";	// Remplace les tuiles invalide par des espaces
+				// Remplace les tuiles invalide par des espaces
+				sortie << "   ";
 		}
 		sortie << endl;
 	}

@@ -22,15 +22,16 @@ public:
 	~map();								//Destructeur par défaut
 	
 	void init(ifstream& entree);		//Lit le fichier et initialise la carte avec
-	void resize(int nbLigne, int nbCol);	//resize la matrice selon les dimensions
+	void resize(int nbLigne, int nbCol);//resize la matrice selon les dimensions
 
 	char getCase(int x, int y)const;	//Retourne le contenu d'une case de la carte selon sa position X,Y
-	int getSizeLine()const;					//Retourne le nombre de ligne du vecteur (Taille du grand vecteur)
-	int getSizeCol()const;					//Retourne le nombre de colonnes du vecteur (Taille des petits vecteurs)
-	void setCase(char val, int x, int y);	//Modifie le contenu d'une case de la carte selon sa position X,Y
+	int getSizeLine()const;				//Retourne le nombre de ligne du vecteur (Taille du grand vecteur)
+	int getSizeCol()const;				//Retourne le nombre de colonnes du vecteur (Taille des petits vecteurs)
+	void setCase(char val, int x, int y);//Modifie le contenu d'une case de la carte selon sa position X,Y
 
 
 	void print(ostream& sortie)const;	//Affiche le contenu de la carte
 };
+
 //afficher le contenu du vecteur avec l’opérateur <<
 ostream& operator<<(ostream& sortie, const map& printMap);

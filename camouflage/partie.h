@@ -11,16 +11,17 @@
 #include "piece.h"
 using namespace std;
 
+// 
 class partie
 {
 private:
 	vector<piece*> _pieces;			// Vecteur comprenant toutes les pièces du jeu
 	map _boardJeu;					// Map du casse tête
 	vector<vector<string>> _solution; // La solution du casse tête
-	bool _trouve;				// Si une solution a été trouvée
-	string	difficulte;			//Nom du fichier d'entrée et de solution
+	bool _trouve;					// Si une solution a été trouvée
+	string	difficulte;				//Nom du fichier d'entrée et de solution
 public:
-	void initialiser(ofstream& sortie);				//initialise le jeu
+	void initialiser(ofstream& sortie);					//initialise le jeu
 	//Trouver la position des 6 pièces qui solutionnent le casse-tête selon la map
 	bool solutionner(int pieceCourante);
 	//Vérifie si une pièce peut être à la pos. x,y dans la map et s’il y a déjà une pièce dans la solution à ces mêmes coordonnées.
@@ -30,5 +31,6 @@ public:
 	void print(ostream& sortie)const;					//affiche la solution
 	void openFile(ostream& sortie, ifstream& entree);	//Ouvre le fichier selon le nom demander
 };
+
 //affiche la solution
 ostream& operator<<(ostream& sortie, const partie& jeu);
