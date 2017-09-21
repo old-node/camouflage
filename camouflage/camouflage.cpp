@@ -19,14 +19,12 @@ using namespace std;
 //Ouvre le fichier selon le nom demander
 void openFile(ostream& sortie, ifstream& entree, string& difficulte);	
 void printPiece(vector<piece*> & vec, const int & i);
-//void tournePieces(vector<piece*> & vec);
 
 /* Programme principal */
 ///=================== */
 int main()
 {
 	setlocale(LC_CTYPE, "fra");
-
 	//// Solutionner le jeu
 
 	partie jeu;
@@ -42,10 +40,9 @@ int main()
 	}
 	else
 	{
-		cout << "Aucune solution n'est possible avec les pièces aloués." << endl;
-		sortie << "Aucune solution n'est possible avec les pièces aloués." << endl;
+		cout << "Aucune solution n'est possible avec les piÃ¨ces alouÃ©s." << endl;
+		sortie << "Aucune solution n'est possible avec les piÃ¨ces alouÃ©s." << endl;
 	}
-
 	system("pause");
 
 	return 1;
@@ -54,13 +51,13 @@ int main()
 /* Fonctions */
 ///========= */
 
-// Fait pivoter les pièces du jeu
+// Fait pivoter les piÃ¨ces du jeu
 void tournePieces(vector<piece*> & vec)
 {
 	for (int i = 0; i < vec.size(); i++)
-		vec.at(i)->tourneDroite();
+		vec.at(i)->tourne();
 }
-// Affiche les pièces dans la console selon leur type
+// Affiche les piÃ¨ces dans la console selon leur type
 void printPiece(vector<piece*> & vec, const int & i)
 {
 	piece2cases *morceau = dynamic_cast<piece2cases*>(vec.at(i));
@@ -80,13 +77,13 @@ void openFile(ostream& sortie, ifstream& entree, string& difficulte) {
 	do
 	{
 		entree.clear();
-		sortie << endl << "Entrer la carte à solutionner <Ex : Expert27 > : ";
+		sortie << endl << "Entrer la carte Ã  solutionner <Ex : Expert27 > : ";
 		cin >> difficulte;
 		nomFichier = "map" + difficulte + ".txt";
 		entree.open(nomFichier.c_str());
 
-		if (!entree.is_open()) // si fichier n’existe pas
+		if (!entree.is_open()) // si fichier nâ€™existe pas
 			sortie << "Le fichier < " << nomFichier << " > n'existe pas! " << endl;
 
-	} while (!entree.is_open());//tant que le fichier n’a pas été ouvert
+	} while (!entree.is_open());//tant que le fichier nâ€™a pas Ã©tÃ© ouvert
 }

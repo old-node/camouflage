@@ -1,11 +1,12 @@
 /* Auteur:	Olivier Lemay Dostie et Olivier G.F.
 // Date:	30 août 2017
-// Ficher:	partie.cpp
+// Ficher:	partie.h
 // But:		Objet qui manipule les différentes versions du jeu.
 */
 
 #pragma once
 #include <string>
+#include <ostream>
 #include "map.h"
 #include "piece.h"
 using namespace std;
