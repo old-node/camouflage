@@ -7,10 +7,7 @@
 
 
 //Constructeur par défaut
-map::map()
-{
-
-}
+map::map() {}
 
 //Constructeur avec dimensions en paramètre
 map::map(int nbLigne, int nbCol)
@@ -31,14 +28,14 @@ void map::init(ifstream& entree) {
 	int nbLigne, nbCol;
 
 	//lecture des dimensions de la map
-	entree >> nbLigne;						
+	entree >> nbLigne;
 	entree.ignore();
 	entree >> nbCol;
-	
+
 	resize(nbLigne, nbCol);
 
 	//initialisation de la map à partir du fichier
-	for (int i = 0; i < nbLigne; i++) {		
+	for (int i = 0; i < nbLigne; i++) {
 		for (int j = 0; j < nbCol; j++) {
 			entree >> _map[i][j];
 		}
