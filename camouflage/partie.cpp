@@ -6,12 +6,19 @@
 #include "partie.h"
 
 //initialise le jeu
-void partie::initialiser() {
+void partie::initialiser(ofstream& sortie) {
 	//On initialise la carte avec le fichier
 	ifstream entree;
-	string	difficulte;
-	openFile(cout, entree, difficulte);
+	openFile(cout, entree);
 	_boardJeu.init(entree);
+
+	//On ouvre le fichier de sortie et on inscrit les dimensions de la carte dedans
+	sortie.open("solution" + difficulte + ".txt");
+	sortie << _boardJeu.getSizeLine() << ", " << _boardJeu.getSizeCol() << endl << endl;
+
+	//On affiche la carte Ã  solutionner
+	cout << "Contenu original de la planche du fichier :" << endl;
+	cout << _boardJeu;
 
 	//On initialise le tableau de solution
 	_solution.resize(_boardJeu.getSizeLine(), vector<string>(_boardJeu.getSizeCol()));
@@ -21,7 +28,7 @@ void partie::initialiser() {
 		}
 	}
 
-	//On initialise les 6 pièces
+	//On initialise les 6 piÃ¨ces
 	_pieces.push_back(new piece3cases('U', " PO"));
 	_pieces.push_back(new piece3cases('V', "P O"));
 	_pieces.push_back(new piece3cases('W', " OP"));
@@ -30,17 +37,16 @@ void partie::initialiser() {
 	_pieces.push_back(new piece3cases('Z', "O  "));
 }
 
-//Trouver la position des 6 pièces qui solutionnent le casse-tête selon la map
+//Trouver la position des 6 piÃ¨ces qui solutionnent le casse-tÃªte selon la map
 bool partie::solutionner(int pieceCourante) {
-	
-	static int nbItteration = 1;
+static int nbItteration = 1;
 
 	for (int r = 0; r < 4; r++)										// Pour chaque rotation
 	{
 		int etendueCol = _boardJeu.getSizeCol();
 		int etendueLine = _boardJeu.getSizeLine();
 		
-		// Essais pour rendre le brute force plus performant (à tester)
+		// Essais pour rendre le brute force plus performant (Ã  tester)
 		if (_pieces[pieceCourante]->getNbTuile() == 2)
 			if (dynamic_cast<piece2cases*> (_pieces[pieceCourante])->getAngle())
 				etendueLine--;
@@ -50,42 +56,48 @@ bool partie::solutionner(int pieceCourante) {
 
 		for (int x = 0; x < etendueCol; x++)						// Pour 4 position de ligne
 		{
-			for (int y = 0; y < etendueLine; y++)					// Pour 4 position de colone
+			for (int y = 0; y < _boardJeu.getSizeLine(); y++)		// Pour 4 position de colone
 			{
 				if (siPieceMatch(*_pieces[pieceCourante], x, y))	// 
 				{
-					placerPiece(*_pieces[pieceCourante], x, y);		
+					placerPiece(*_pieces[pieceCourante], x, y);
 
 					print(cout);
-					cout << nbItteration << "e ittération de la solution." << endl << endl;
-					nbItteration++;
-					
-					if (pieceCourante == 5)							// 6 pièces placées, solution trouvée
+					cout << endl;
+
+					if (pieceCourante == 5)							// 6 piÃ¨ces placÃ©es, solution trouvÃ©e
+					{
+						_trouve = true;
 						return true;
+					}
 
 					if (solutionner(pieceCourante + 1))
+					{
+						_trouve = true;
 						return true;
+					}
 
 					retirerPiece(*_pieces[pieceCourante], x, y);
 				}
-				
 			}
 		}
 		_pieces[pieceCourante]->tourne();
 	}
+	_trouve = false;
 	return false;
 }
 
-//Vérifie si une pièce peut être à la pos. x,y dans la map et s’il y a déjà une pièce dans la solution à ces mêmes coordonnées.
+
+//VÃ©rifie si une piÃ¨ce peut Ãªtre Ã  la pos. x,y dans la map et sâ€™il y a dÃ©jÃ  une piÃ¨ce dans la solution Ã  ces mÃªmes coordonnÃ©es.
 bool partie::siPieceMatch(const piece& p, int x, int y) {
-	//Pour les 4 cases de la pièce
+	//Pour les 4 cases de la piÃ¨ce
 	for (int i = 0; i < 2; i++) {
 		for (int j = 0; j < 2; j++) {
 
-			//On vérifie si la case de la pièce est valide
+			//On vÃ©rifie si la case de la piÃ¨ce est valide
 			if (p.getTuile(i, j) != '\0') {
 
-				//Si la case de la pièce n'est pas en dehors de la carte
+				//Si la case de la piÃ¨ce n'est pas en dehors de la carte
 				if ((x + i) < _boardJeu.getSizeCol() && (y + j) < _boardJeu.getSizeLine()) {
 
 					//Si la case corespondante de la solution est vide
@@ -110,7 +122,7 @@ bool partie::siPieceMatch(const piece& p, int x, int y) {
 	return true;
 }
 
-//Place la pièce dans la solution à x, y
+//Place la piÃ¨ce dans la solution Ã  x, y
 void partie::placerPiece(const piece & p, int x, int y) {
 	for (int i = 0; i < 2; i++)
 		for (int j = 0; j < 2; j++)
@@ -120,7 +132,7 @@ void partie::placerPiece(const piece & p, int x, int y) {
 			}
 }
 
-//retire la pièce la solution à x, y
+//retire la piÃ¨ce la solution Ã  x, y
 void partie::retirerPiece(const piece & p, int x, int y) {
 	for (int i = 0; i < 2; i++)
 		for (int j = 0; j < 2; j++)
@@ -139,21 +151,21 @@ void partie::print(ostream & sortie)const {
 }
 
 //Ouvre le fichier selon le nom demander
-void partie::openFile(ostream& sortie, ifstream& entree, string& difficulte) {
+void partie::openFile(ostream& sortie, ifstream& entree) {
 	string nomFichier;
 
 	do
 	{
 		entree.clear();
-		sortie << endl << "Entrer la carte à solutionner <Ex : Expert27 > : ";
+		sortie << endl << "Entrer la carte Ã  solutionner <Ex : Expert27 > : ";
 		cin >> difficulte;
 		nomFichier = "map" + difficulte + ".txt";
 		entree.open(nomFichier.c_str());
 
-		if (!entree.is_open()) // si fichier n’existe pas
+		if (!entree.is_open()) // si fichier nâ€™existe pas
 			sortie << "Le fichier < " << nomFichier << " > n'existe pas! " << endl;
 
-	} while (!entree.is_open());//tant que le fichier n’a pas été ouvert
+	} while (!entree.is_open());//tant que le fichier nâ€™a pas Ã©tÃ© ouvert
 }
 
 ostream & operator<<(ostream & sortie, const partie & jeu)
