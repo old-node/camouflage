@@ -1,6 +1,6 @@
 /* Auteur:	Olivier Lemay Dostie et Olivier G.F.
 // Date:	30 août 2017
-// Ficher:	partie.cpp
+// Ficher:	partie.h
 // But:		Objet qui manipule les différentes versions du jeu.
 */
 

@@ -35,7 +35,7 @@ int main()
 	if (jeu.solutionner(0))
 		jeu.print(cout);
 	else
-		cout << "Aucune solution n'est possible avec les pièces aloués." << endl;
+		cout << "Aucune solution n'est possible avec les pièces alouées." << endl;
 	
 	system("pause");
 
@@ -49,7 +49,7 @@ int main()
 void tournePieces(vector<piece*> & vec)
 {
 	for (int i = 0; i < vec.size(); i++)
-		vec.at(i)->tourneDroite();
+		vec.at(i)->tourne();
 }
 // Affiche les pièces dans la console selon leur type
 void printPiece(vector<piece*> & vec, const int & i)

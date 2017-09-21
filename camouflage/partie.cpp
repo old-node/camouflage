@@ -1,7 +1,6 @@
 /* Auteur:	Olivier Lemay Dostie et Olivier G.F.
 // Date:	04 septembre 2017
 // Ficher:	partie.cpp
-// But:		Méthodes de l'objet partie.
 */
 
 #include "partie.h"
@@ -33,24 +32,20 @@ void partie::initialiser() {
 
 //Trouver la position des 6 pièces qui solutionnent le casse-tête selon la map
 bool partie::solutionner(int pieceCourante) {
+	
 	static int nbItteration = 1;
-
 
 	for (int r = 0; r < 4; r++)										// Pour chaque rotation
 	{
 		int etendueCol = _boardJeu.getSizeCol();
 		int etendueLine = _boardJeu.getSizeLine();
 		
-		// Base*  x = d22;
-		// if (x->isA<D22>());
-		// https://stackoverflow.com/questions/307765/how-do-i-check-if-an-objects-type-is-a-particular-subclass-in-c
-
 		// Essais pour rendre le brute force plus performant (à tester)
-		if (_pieces[pieceCourante]->isA<piece2cases>())
+		if (_pieces[pieceCourante]->getNbTuile() == 2)
 			if (dynamic_cast<piece2cases*> (_pieces[pieceCourante])->getAngle())
-				etendueCol--;
-			else
 				etendueLine--;
+			else
+				etendueCol--;
 		
 
 		for (int x = 0; x < etendueCol; x++)						// Pour 4 position de ligne
@@ -76,7 +71,7 @@ bool partie::solutionner(int pieceCourante) {
 				
 			}
 		}
-		_pieces[pieceCourante]->tourneDroite();
+		_pieces[pieceCourante]->tourne();
 	}
 	return false;
 }

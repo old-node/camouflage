@@ -1,6 +1,6 @@
 /* Auteur:	Olivier Lemay Dostie et Olivier G.F.
 // Date:	30 août 2017
-// Ficher:	map.cpp
+// Ficher:	piece.h
 // But:		Objets du jeu utilisé pour compléter la map.
 */
 
@@ -24,29 +24,14 @@ public:
 	char _code = '\0';		// Code qui identifie la tuile dans le jeu
 	bool _valide = false;	// Variable pour s'assurer que la tuile est adéquate
 
-	section() {}					// Initialisateur par défaut
-	section(char code)				// Initialiseur
+	section() {}			// Initialisateur par défaut
+	section(char code)		// Initialiseur
 	{
 		_code = toupper(code);
 		if (code != '\0')
 			_valide = true;
 		else
 			_valide = false;
-	}
-	section(const section & t)		// Copieur
-	{
-		_code = t._code;
-		_valide = t._valide;
-	}
-	const section * operator=
-		(section & t)				// Copieur par l'opérateur =
-	{
-		return new section(t);
-	}
-	~section()						// Destructeur
-	{
-		_code = '\0';
-		_valide = 0;
 	}
 };
 
@@ -55,42 +40,33 @@ public:
 class piece
 {
 protected:
-	char _nom = '\0';				// Caractère qui représente la pièce
-	section _tuile[2][2];			// Éléments formant la pièce
+	int _nbTuile = 0;				// Nombre de tuiles présentes dans la pièce.
+	char _nom = '\0';				// Caractère qui représente la pièce.
+	section _tuile[2][2];			// Éléments formant la pièce.
 	
-	void initTuile					// Initialise le nombre de tuile nécessaire pour la pièce
-	(const char * t, const int NB_TUILE);
+	void initTuile(const char * t);	// Initialise le nombre de tuile nécessaire pour la pièce
 	virtual void pivote() = 0;		// Effectue les modifications principale avant les rotations
 
 public:
-	virtual piece * create			// Initialisateur par virtualisation
-	(const char & nom, const char * t);
+	virtual piece * create(const char & nom, const char * t); // Initialisateur par virtualisation
 	piece();						// Initialisateur par défaut
 	piece(const char & nom, const char * t);
-
-	virtual piece *					// Copieur héréditaire
-		piece::clone() = 0;
-	piece & operator=				// Copieur par l'opérateur =
-		(const piece & p);
-
+	virtual piece *	piece::clone() = 0;		// Copieur héréditaire
+	
 	virtual ~piece() = default;		// Destructeur
 
-	virtual void tourneDroite() = 0;// Fait pivoter la pièce sur elle-même dans le sens horaire
-
-	/// Setteur
-	void setNom(char nom);			// Change le caractère qui représente la pièce
-	virtual void setTuile			// Change le contenu des tuiles de la pièce
-	(const char * t);
-
-	template<typename T>
-	bool isA();						// Permet de savoir de quel type l'objet est
 	
+	// Setteur
+	void setNom(char nom);			// Change le caractère qui représente la pièce
+	virtual void tourne() = 0;		// Fait pivoter la pièce sur elle-même dans le sens horaire
+
+	// Getteurs
 	char getNom() const;			// Retourne le caractère qui représente la pièce
-	char getTuile(int i, int j) const;	// Retourne une des tuile de la pièce
-
-	void print(ostream & sortie) const;	// Affiche le contenu de toutes les tuiles de la pièce
+	int getNbTuile() const;			// Obtient le nombre de tuiles de la pièce
+	char getTuile(int i, int j) const;		// Retourne une des tuile de la pièce
+	
+	void print(ostream & sortie) const;		// Affiche le contenu de toutes les tuiles de la pièce
 };
-
 
 
 
@@ -98,8 +74,7 @@ public:
 class piece2cases : virtual public piece
 {
 private:
-	const int NB_TUILE = 2;			// Nombre de tuiles des objets pieces2cases.
-	bool _angle = true;
+	bool _angle = false;			//
 
 	void pivote() override {}		// 
 
@@ -111,34 +86,26 @@ public:
 
 	~piece2cases() override;		// Destructeur
 
-	void setTuile(const char * t);	// Change le nombre de tuile nécessaire de la pièce
+	bool getAngle() const;			
 
-	void tourneDroite() override;	// Fait pivoter la pièce sur elle-même dans le sens horaire
-
-	bool getAngle() const;			// Retourne l'angle de la pièce
+	void tourne() override;	// Fait pivoter la pièce sur elle-même dans le sens horaire
 };
 
 // Pièces formées de 3 tuiles.
 class piece3cases : virtual public piece
 {
 private:
-	const int NB_TUILE = 3;			// Nombre de tuiles des objets pieces3cases.
-
 	void pivote() override;			// Effectue les modifications principale avant les rotations
 
 public:
-	piece3cases * create			// Initialisateur permettant la surcharge de paramètres
-	(const char & nom, const char * t) override;
-	piece3cases
-	(const char & nom, const char * t);	// Initialisateur
-
+	// Initialisateur permettant la surcharge de paramètres
+	piece3cases * create(const char & nom, const char * t) override;
+	piece3cases	(const char & nom, const char * t);	// Initialisateur
 	piece3cases * clone() override;	// Copieur héréditaire
 
 	~piece3cases() override;		// Destructeur
 
-	void setTuile(const char * t);
-
-	void tourneDroite() override;	// Fait pivoter la pièce sur elle-même dans le sens horaire
+	void tourne() override;	// Fait pivoter la pièce sur elle-même dans le sens horaire
 };
 
 
@@ -147,4 +114,4 @@ public:
 ///===============///
 // AUTRES MÉTHODES //
 ///===============///
-ostream & operator<<(ostream & sortie, piece & p);
+ostream & operator<<(ostream & sortie, const piece & p);
