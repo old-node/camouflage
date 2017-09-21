@@ -82,6 +82,9 @@ public:
 	virtual void setTuile			// Change le contenu des tuiles de la pièce
 	(const char * t);
 
+	template<typename T>
+	bool isA();						// Permet de savoir de quel type l'objet est
+	
 	char getNom() const;			// Retourne le caractère qui représente la pièce
 	char getTuile(int i, int j) const;	// Retourne une des tuile de la pièce
 

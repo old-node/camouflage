@@ -5,8 +5,6 @@
 */
 
 #include "partie.h"
-#include <string>
-using namespace std;
 
 //initialise le jeu
 void partie::initialiser() {
@@ -43,11 +41,17 @@ bool partie::solutionner(int pieceCourante) {
 		int etendueCol = _boardJeu.getSizeCol();
 		int etendueLine = _boardJeu.getSizeLine();
 		
+		// Base*  x = d22;
+		// if (x->isA<D22>());
+		// https://stackoverflow.com/questions/307765/how-do-i-check-if-an-objects-type-is-a-particular-subclass-in-c
+
 		// Essais pour rendre le brute force plus performant (à tester)
-		//if (dynamic_cast<piece2cases*> (_pieces[pieceCourante])->getAngle())
-		//	etendueCol--;
-		//else
-		//	etendueLine--;
+		if (_pieces[pieceCourante]->isA<piece2cases>())
+			if (dynamic_cast<piece2cases*> (_pieces[pieceCourante])->getAngle())
+				etendueCol--;
+			else
+				etendueLine--;
+		
 
 		for (int x = 0; x < etendueCol; x++)						// Pour 4 position de ligne
 		{

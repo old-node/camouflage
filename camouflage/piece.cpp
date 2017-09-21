@@ -4,7 +4,6 @@
 */
 
 #include "piece.h"
-using namespace std;
 
 // Permet l'écriture des pièces avec l'opérater <<
 ostream & operator<<(ostream & sortie, piece & p)
@@ -76,6 +75,13 @@ void piece::setTuile(const char * t)
 {
 	assert(strlen(t) == 1);
 	initTuile(t, 1);				// Instantiation par défaut des tuiles
+}
+
+// Permet de savoir de quel type l'objet est
+template<typename T>
+inline bool piece::isA()
+{
+	return (dynamic_cast<T*>(this) != NULL);
 }
 
 // Retourne le caractère qui représente la pièce

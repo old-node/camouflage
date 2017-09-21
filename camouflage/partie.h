@@ -6,6 +6,7 @@
 
 #pragma once
 #include <string>
+#include <ostream>
 #include "map.h"
 #include "piece.h"
 using namespace std;

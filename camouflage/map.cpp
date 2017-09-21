@@ -6,6 +6,7 @@
 
 #include "map.h"
 
+
 //Constructeur par défaut
 map::map()
 {
